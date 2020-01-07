@@ -10,6 +10,16 @@ const App = () => {
     { id: 3, content: 'Javascript', completed: false },
   ]);
 
+  const toggleCompleted = id => {
+    setTodos([
+      ...todos.map(todo => (todo.id === id ? { ...todo, id, completed: !todo.completed } : todo)),
+    ]);
+  };
+
+  useEffect(() => {
+    console.log(todos);
+  }, [todos]);
+
   return (
     <div className="container">
       <h1 className="title">Todos</h1>
@@ -26,7 +36,7 @@ const App = () => {
 
       <TodoWrapper>
         {todos.map(todo => (
-          <Todo key={todo.id} todoInfo={todo} />
+          <Todo key={todo.id} todoInfo={todo} onToggle={toggleCompleted} />
         ))}
       </TodoWrapper>
 
