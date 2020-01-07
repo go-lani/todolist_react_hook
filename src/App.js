@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Header from './components/Header';
+import CreateInput from './components/Inputs/CreateInput';
 import TodoWrapper from './components/Todolist';
 import Todo from './components/Todolist/Todo';
 import './App.css';
@@ -22,10 +24,10 @@ const App = () => {
 
   return (
     <div className="container">
-      <h1 className="title">Todos</h1>
-      <div className="ver">2.0</div>
+      <Header>
+        <CreateInput todos={todos} setTodos={setTodos} />
+      </Header>
 
-      <input className="input-todo" placeholder="What needs to be done?" autoFocus />
       <ul className="nav">
         <li id="all" className="active">
           All
