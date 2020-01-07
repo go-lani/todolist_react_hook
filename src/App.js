@@ -4,6 +4,9 @@ import Footer from './components/Footer';
 import CreateInput from './components/Inputs/CreateInput';
 import TodoWrapper from './components/Todolist';
 import Todo from './components/Todolist/Todo';
+import Tab from './components/Tab';
+import TabList from './components/Tab/TabList';
+
 import './App.css';
 
 const App = () => {
@@ -29,17 +32,23 @@ const App = () => {
         <CreateInput todos={todos} setTodos={setTodos} />
       </Header>
 
-      <ul className="nav">
+      <Tab>
         <li id="all" className="active">
           All
         </li>
         <li id="active">Active</li>
         <li id="completed">Completed</li>
-      </ul>
+      </Tab>
 
       <TodoWrapper>
         {todos.map(todo => (
-          <Todo key={todo.id} todoInfo={todo} onToggle={toggleCompleted} />
+          <Todo
+            key={todo.id}
+            todos={todos}
+            setTodos={setTodos}
+            todoInfo={todo}
+            onToggle={toggleCompleted}
+          />
         ))}
       </TodoWrapper>
 
