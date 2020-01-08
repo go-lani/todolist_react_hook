@@ -1,10 +1,10 @@
 import React from 'react'
 
-const TabList = ({ todoInfo }) => {
-  const { id, open } = todoInfo;
+const TabList = ({ category, onChangeCategory }) => {
+  const { id, open } = category;
   return (
-    <li id="all" className="active">
-      All
+    <li id={id} className={open ? 'active' : ''} onClick={() => onChangeCategory(id)}>
+      {id.charAt(0).toUpperCase() + id.slice(1)}
     </li>
   )
 }

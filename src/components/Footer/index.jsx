@@ -1,12 +1,6 @@
 import React from 'react'
 
-const Footer = ({todos, setTodos}) => {
-  const allComplete = e => {
-    console.log(e.target.checked);
-    setTodos([
-      ...todos.map(todo => ({...todo, completed: e.target.checked}))
-    ])
-  }
+const Footer = ({ onAllComplete, onClearComplete, completedLength, activeLength }) => {
   return (
     <footer className="footer">
       <div className="complete-all">
@@ -14,19 +8,18 @@ const Footer = ({todos, setTodos}) => {
           className="custom-checkbox"
           type="checkbox"
           id="ck-complete-all"
-          onChange={allComplete}
+          onChange={onAllComplete}
         />
         <label htmlFor="ck-complete-all">Mark all as complete</label>
       </div>
       <div className="clear-completed">
         <button
           className="btn"
-          onClick={() => setTodos([...todos.filter(todo => todo.completed !== true)])
-          }>
-          Clear completed (<span className="completed-todos">{[...todos].filter(todo => todo.completed === true).length}</span>)
+          onClick={onClearComplete}>
+          Clear completed (<span className="completed-todos">{completedLength}</span>)
         </button>
         <strong className="active-todos">
-          {todos.filter(todo => todo.completed === false).length}
+          {activeLength}
         </strong> items left
       </div>
     </footer>
