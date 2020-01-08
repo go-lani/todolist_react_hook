@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Footer = ({ onAllComplete, onClearComplete, completedLength, activeLength }) => {
+const Footer = ({ onAllDone, onClearDone, onDoneLength, onActiveLength }) => {
   return (
     <footer className="footer">
       <div className="complete-all">
@@ -8,18 +8,18 @@ const Footer = ({ onAllComplete, onClearComplete, completedLength, activeLength 
           className="custom-checkbox"
           type="checkbox"
           id="ck-complete-all"
-          onChange={onAllComplete}
+          onChange={onAllDone}
         />
-        <label htmlFor="ck-complete-all">Mark all as complete</label>
+        <label htmlFor="ck-complete-all">Mark all as Done</label>
       </div>
       <div className="clear-completed">
         <button
           className="btn"
-          onClick={onClearComplete}>
-          Clear completed (<span className="completed-todos">{completedLength}</span>)
+          onClick={onClearDone}>
+          Clear Done (<span className="completed-todos">{onDoneLength}</span>)
         </button>
         <strong className="active-todos">
-          {activeLength}
+          {onActiveLength}
         </strong> items left
       </div>
     </footer>

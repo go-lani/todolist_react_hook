@@ -10,112 +10,90 @@ import TabList from './components/Tab/TabList';
 import './App.css';
 
 const App = () => {
-  const [todos, setTodos] = useState([
-    { id: 1, content: 'HTML', completed: false },
-    { id: 2, content: 'CSS', completed: true },
-    { id: 3, content: 'Javascript', completed: false },
-  ]);
+  const [todos, setTodos] = useState([]);
 
-  const [categorys, setCategorys] = useState([
+  const [categories, setCategories] = useState([
     { id: 'all', open: true },
     { id: 'active', open: false },
-    { id: 'completed', open: false },
+    { id: 'done', open: false },
   ]);
 
+  useEffect(() => {
+    setTodos([
+      { id: 1, content: 'HTML', done: false },
+      { id: 2, content: 'CSS', done: true },
+      { id: 3, content: 'Javascript', done: false },
+    ]);
+
+    setCategories([
+      { id: 'all', open: true },
+      { id: 'active', open: false },
+      { id: 'done', open: false },
+    ]);
+  }, []);
+
+  // Todo 렌더링 함수
+  const renderTodo = (todos, categories) => {
+    const [{ id: currentCategory }] = categories.filter(category => category.open === true);
+
+    let _todos = todos;
+
+    if (currentCategory === 'active') _todos = todos.filter(todo => todo.done === false);
+    if (currentCategory === 'done') _todos = todos.filter(todo => todo.done === true);
+
+    return _todos.map(todo => (
+      <Todo key={todo.id} todo={todo} onRemoveTodo={removeTodo} onToggleDone={toggleDone} />
+    ));
+  };
+
+  // Todo 생성시 ID 생성기능
   const createId = () => {
     return Math.max(0, ...todos.map(todo => todo.id)) + 1;
   };
 
+  // Todo 생성기능
   const addTodo = ({ key, target, target: { value } }) => {
     const content = value.trim();
 
     if (key !== 'Enter' || content === '') return;
 
-    setTodos([...todos, { id: createId(), content, completed: false }]);
+    setTodos([...todos, { id: createId(), content, done: false }]);
 
     target.value = '';
   };
 
-  const toggleCompleted = id => {
-    setTodos([
-      ...todos.map(todo => (todo.id === id ? { ...todo, id, completed: !todo.completed } : todo)),
-    ]);
-  };
-
+  // Todo 삭제기능
   const removeTodo = id => {
     setTodos([...todos].filter(todo => todo.id !== id));
   };
 
-  const allComplete = e => {
-    setTodos([...todos.map(todo => ({ ...todo, completed: e.target.checked }))]);
+  // Todo 완료/미완료 체크 기능
+  const toggleDone = id => {
+    setTodos([...todos.map(todo => (todo.id === id ? { ...todo, id, done: !todo.done } : todo))]);
   };
 
-  const clearComplete = () => {
-    setTodos([...todos.filter(todo => todo.completed !== true)]);
+  // 전체 완료 기능
+  const allDone = e => {
+    setTodos([...todos.map(todo => ({ ...todo, done: e.target.checked }))]);
   };
 
+  // 완료한 Todo 삭제기능
+  const clearDone = () => {
+    setTodos([...todos.filter(todo => todo.done !== true)]);
+  };
+
+  // 카테고리 탭 기능
   const changeCategory = id => {
-    setCategorys([
-      ...categorys.map(category =>
+    setCategories([
+      ...categories.map(category =>
         category.id === id ? { ...category, open: true } : { ...category, open: false },
       ),
     ]);
   };
 
-  const completedLength = (() => todos.filter(todo => todo.completed === true).length)();
-  const activeLength = (() => todos.filter(todo => todo.completed === false).length)();
-
-  const renderTodo = (todos, categorys) => {
-    const [{ id: currentCategory }] = categorys.filter(category => category.open === true);
-    const _todos = todos;
-
-    switch (currentCategory) {
-      case 'all':
-        return _todos.map(todo => (
-          <Todo
-            key={todo.id}
-            todoInfo={todo}
-            removeTodo={removeTodo}
-            onToggleCompleted={toggleCompleted}
-          />
-        ));
-      case 'active':
-        return _todos
-          .filter(todo => todo.completed === false)
-          .map(todo => (
-            <Todo
-              key={todo.id}
-              todoInfo={todo}
-              removeTodo={removeTodo}
-              onToggleCompleted={toggleCompleted}
-            />
-          ));
-      case 'completed':
-        return _todos
-          .filter(todo => todo.completed === true)
-          .map(todo => (
-            <Todo
-              key={todo.id}
-              todoInfo={todo}
-              removeTodo={removeTodo}
-              onToggleCompleted={toggleCompleted}
-            />
-          ));
-      default:
-        return _todos.map(todo => (
-          <Todo
-            key={todo.id}
-            todoInfo={todo}
-            removeTodo={removeTodo}
-            onToggleCompleted={toggleCompleted}
-          />
-        ));
-    }
-  };
-
-  useEffect(() => {
-    console.log(todos);
-  }, [todos]);
+  // 미완료/완료된 Todo 개수 체크 및 렌더링 함수
+  const doneLength = (() => todos.filter(todo => todo.done === true).length)();
+  const activeLength = (() => todos.filter(todo => todo.done === false).length)();
 
   return (
     <div className="container">
@@ -123,16 +101,16 @@ const App = () => {
         <CreateInput onAddTodo={addTodo} />
       </Header>
       <Tab>
-        {categorys.map(category => (
+        {categories.map(category => (
           <TabList key={category.id} category={category} onChangeCategory={changeCategory} />
         ))}
       </Tab>
-      <TodoWrapper>{renderTodo(todos, categorys)}</TodoWrapper>
+      <TodoWrapper>{renderTodo(todos, categories)}</TodoWrapper>
       <Footer
-        onAllComplete={allComplete}
-        onClearComplete={clearComplete}
-        completedLength={completedLength}
-        activeLength={activeLength}
+        onAllDone={allDone}
+        onClearDone={clearDone}
+        onDoneLength={doneLength}
+        onActiveLength={activeLength}
       />
     </div>
   );
