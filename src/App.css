@@ -21,11 +21,12 @@ body {
   max-width: 750px;
   min-width: 450px;
   margin: 0 auto;
-  padding: 15px;
+  padding: 150px 15px;
+  min-height: 100vh;
 }
 
 .title {
-  /* margin: 10px 0; */
+  margin: 0 0 50px;
   font-size: 4.5em;
   font-weight: 100;
   text-align: center;
@@ -82,8 +83,6 @@ body {
   background-color: #23b7e5;
 }
 
-.todo-list {}
-
 /* .todo-item */
 .todo-item {
   position: relative;
@@ -106,26 +105,13 @@ body {
   border-bottom-right-radius: 4px;
 }
 
-/*
-  .custom-checkbox
-  custom-checkbox 바로 뒤에 위치한 label의 before와 after를 사용해
-  custom-checkbox의 외부 박스와 내부 박스를 생성한다.
-
-  <input class="custom-checkbox" type="checkbox" id="myId">
-  <label for="myId">Content</label>
-*/
-
 .custom-checkbox {
   display: none;
 }
 
 .custom-checkbox + label {
-  position: absolute; /* 부모 위치를 기준으로 */
-  top: 50%;
-  left: 15px;
-  transform: translate3d(0, -50%, 0);
+  position: relative;
   display: inline-block;
-  width: 90%;
   line-height: 2em;
   padding-left: 35px;
   cursor: pointer;
@@ -173,7 +159,8 @@ body {
 .footer {
   display: flex;
   justify-content: space-between;
-  margin: 20px 0;
+  margin: 20px 0 0;
+  padding: 0 15px;
 }
 
 .complete-all, .clear-completed {
@@ -182,12 +169,16 @@ body {
 }
 
 .clear-completed {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
   text-align: right;
-  padding-right: 15px;
 }
 
 .btn {
-  padding: 1px 5px;
+  border: 1px solid #ccc;
+  margin: 0 10px 0 0;
+  padding: 2px 5px;
   font-size: .8em;
   line-height: 1.5;
   border-radius: 3px;
